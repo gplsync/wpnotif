@@ -62,16 +62,25 @@ final class WPNotif_Handler
 
         add_action('wp_ajax_wpnotif_update_message', array($this, 'wpnotif_update_message'));
 
+
         add_action('woocommerce_review_order_before_submit', array($this, 'user_consent_checkout'));
         add_action('woocommerce_edit_account_form', array($this, 'user_consent_checkout'));
+
         add_action('woocommerce_checkout_update_order_meta', array($this, 'update_user_consent_checkout'));
         add_action('woocommerce_save_account_details', array($this, 'update_user_consent_user'));
+
         add_action('show_user_profile', array($this, 'user_profile_consent'), 105);
         add_action('edit_user_profile', array($this, 'user_profile_consent'), 105);
         add_action('personal_options_update', array($this, 'update_user_consent_admin'));
         add_action('edit_user_profile_update', array($this, 'update_user_consent_admin'));
+
+
         add_action('init', array($this, 'init'));
+
         add_action('admin_init', array($this, 'admin_init'));
+
+        add_action('wpnotif_chck', array($this, 'wpnotif_chck'));
+
         add_action('init', array($this, 'wpnotif_load_gateways'), 5);
 
     }
@@ -312,7 +321,12 @@ final class WPNotif_Handler
             }
 
 
+        }else if($default_checked && $this->is_checkout()){
+            $combine_notifications = 'checked';
+            $sms_notifications = 'checked';
+            $whatsapp_notifications = 'checked';
         }
+
         if ($show_heading) {
             echo '<h3>' . esc_attr__('WPNotif User Consent', 'wpnotif') . '</h3>';
         }
@@ -721,7 +735,7 @@ final class WPNotif_Handler
 
                     $item_name = $item['name'];
 
-                    if( $item->is_type('variable') ) {
+                    if ($item->is_type('variable')) {
                         $variation_id = $item->get_variation_id();
                         $variation = wc_get_product($variation_id);
                         $item_name = $variation->get_formatted_name();
@@ -980,14 +994,13 @@ final class WPNotif_Handler
             }
         }
 
-        if(empty($user_phone) && $newsletter){
-            $mob = self::get_customer_mobile($user_id, WPNotif::data_type('user_mobile',array()));
-            return $mob['countrycode'].$mob['mobile'];
+        if (empty($user_phone) && $newsletter) {
+            $mob = self::get_customer_mobile($user_id, WPNotif::data_type('user_mobile', array()));
+            return $mob['countrycode'] . $mob['mobile'];
         }
 
         return $user_phone;
     }
-
 
 
     public static function get_admin_mobile($user_id)

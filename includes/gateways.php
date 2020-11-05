@@ -105,11 +105,7 @@ class WPNotif_SMS_handler
                     $sid = $whatsapp['account_sid'];
                     $token = $whatsapp['auth_token'];
 
-
-                    $messagetemplate = str_replace("\r\n", "\n", $messagetemplate);
-
-                    $messagetemplate = nl2br($messagetemplate);
-                    $messagetemplate = preg_replace('#<br\s*/?>#i', "\n", $messagetemplate);
+                    $messagetemplate = str_replace("\r\n","\n",$messagetemplate);
 
                     try {
                         $client = new Client($sid, $token);

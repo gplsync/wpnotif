@@ -3,9 +3,9 @@
 /*
  * Plugin Name: WPNotif: WordPress SMS & WhatsApp Notifications
  * Description: Send SMS or WhatsApp message to your customers or inform them about their WooCommerce order updates.
- * Version: 2.1.1.4
+ * Version: 2.1.2
  * Plugin URI: https://wpnotif.unitedover.com/
- * GitHub Plugin URI:  https://github.com/gplsync/wpnotif/
+ * GitHub Plugin URI: https://github.com/gplsync/wpnotif/
  * Author URI: https://www.unitedover.com/
  * Author: UnitedOver
  * Text Domain: wpnotif
@@ -21,8 +21,6 @@ update_site_option('wpnotif_license_type',1);
 delete_site_option('wpnotif_purchasefail');
 delete_site_option('wpnotif_unr');
 delete_site_option('wpnotif_dsb');
-
-
 
 require dirname(__FILE__) . '/update/Puc/v4p6/Factory.php';
 require dirname(__FILE__) . '/update/Puc/v4/Factory.php';
@@ -62,9 +60,7 @@ final class WPNotif
     protected static $_instance = null;
 
 
-
-
-    public static $version = '2.1.1.4';
+    public static $version = '2.1.1.8';
 
 
     public $newsletter;
@@ -193,7 +189,7 @@ final class WPNotif
 
     public static function add_wp_footer()
     {
-        if(!self::can_notify_users() || !WPNotif_Handler::isWhatsappWebEnabled()) {
+        if (!self::can_notify_users() || !WPNotif_Handler::isWhatsappWebEnabled()) {
             return;
         }
 
@@ -379,12 +375,12 @@ final class WPNotif
                 } else if ($order) {
                     $data = WPNotif::data_type('order', $order);
                     $mobile = WPNotif_Handler::get_customer_mobile($order->get_customer_id(), $data);
-                    if(!empty($mobile)){
-                    ?>
-                    <input type="hidden" class="mobile" name="mobile"
-                           value="<?php echo esc_html($mobile['countrycode']);
-                           echo esc_html($mobile['mobile']); ?>"/>
-                    <?php
+                    if (!empty($mobile)) {
+                        ?>
+                        <input type="hidden" class="mobile" name="mobile"
+                               value="<?php echo esc_html($mobile['countrycode']);
+                               echo esc_html($mobile['mobile']); ?>"/>
+                        <?php
                     }
                 }
                 ?>
@@ -970,8 +966,13 @@ final class WPNotif
             ),
             'api' => array(
                 'label' => esc_attr__('WhatsApp Business API', 'wpnotif'),
-                'values' => array(esc_attr__('Twilio', 'wpnotif') => array('value' => 1))
-            )
+                'values' => array(
+                    esc_attr__('Twilio', 'wpnotif') => array('value' => 1),
+                    /*esc_attr__('MessageBird', 'wpnotif') => array('value' => 3),
+                    esc_attr__('Karix', 'wpnotif') => array('value' => 4),
+                    esc_attr__('gupshup', 'wpnotif') => array('value' => 5),*/
+                )
+            ),
         );
     }
 
@@ -1085,7 +1086,8 @@ final class WPNotif
         self::display_country_list();
     }
 
-    public static function can_notify_users(){
+    public static function can_notify_users()
+    {
         if (current_user_can('manage_options') || self::can_edit_orders()) {
             return true;
         } else {
@@ -1126,7 +1128,7 @@ final class WPNotif
             "PleasecompleteyourSettings" => esc_attr__("Please complete your settings", 'wpnotif'),
             "PleasecompleteyourAPISettings" => esc_attr__("Please complete your API settings", 'wpnotif'),
             'ajax_url' => admin_url('admin-ajax.php'),
-            "isWhatsappWebEnabled" => WPNotif_Handler::isWhatsappEnabled(),
+            "isWhatsappWebEnabled" => WPNotif_Handler::isWhatsappWebEnabled(),
             "direction" => is_rtl() ? 'rtl' : 'ltr',
             "Copiedtoclipboard" => esc_attr__('Copied to clipboard!', 'wpnotif')
         );
@@ -2214,7 +2216,7 @@ final class WPNotif
                         <span class="status_text yes">On</span>
                         <span class="status_text no">Off</span>
                     </div>
-                    <p class="wpnotif_desc"><?php echo sprintf(esc_attr__('This feature works better with %sDigits%s. It even comes with free SMS for verification.', 'wpnotif'),'<a href="'.$digits_download_link.'" target="_blank">','</a>'); ?></p>
+                    <p class="wpnotif_desc"><?php echo sprintf(esc_attr__('This feature works better with %sDigits%s. It even comes with free SMS for verification.', 'wpnotif'), '<a href="' . $digits_download_link . '" target="_blank">', '</a>'); ?></p>
                 </td>
             </tr>
 
@@ -2663,7 +2665,7 @@ final class WPNotif
 
     public static function notify($user_id, $key, $data, $sms = true, $whatsapp = true)
     {
-        if($sms) {
+        if ($sms) {
             WPNotif_Handler::instance()->notify_user($user_id, $data, $key, WPNotif_Handler::$sms);
         }
 

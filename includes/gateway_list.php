@@ -535,6 +535,7 @@ if (!function_exists('untdovr_add_gateway')) {
             ),
             'Gateway' => array(
                 'value' => 93,
+                'label' => 'Gateway.sa',
                 'require_addon' => 1,
                 'inputs' => array(
                     __('Username') => array('text' => true, 'name' => 'username'),

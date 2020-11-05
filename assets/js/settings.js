@@ -523,7 +523,7 @@ jQuery(function () {
 
         if (typeof acr !== typeof undefined && acr !== false) {
             var inv = 0;
-          
+            
         }
 
         var tab = jQuery("." + c);
@@ -620,9 +620,8 @@ jQuery(function () {
         if (jQuery(this).attr('readonly')) return;
 
 
-       
-        jQuery(".wpnotif_prc_ver").hide();
-        jQuery(".wpnotif_prc_nover").hide();
+           jQuery(".wpnotif_prc_ver").hide();
+           jQuery(".wpnotif_prc_nover").hide();
         
     });
 
@@ -711,10 +710,7 @@ jQuery(function () {
                 version: jQuery("input[name='wpnotif_version']").val(),
                 settings: 1,
             }, function (data, status) {
-                
-				data = 1;
-				
-				
+                data == 1;
                     jQuery(".wpnotif_domain_type").fadeIn('fast');
                     jQuery(".wpnotif_prchcde").fadeOut();
                     jQuery(".wpnotif_prc_ver").fadeOut();
@@ -801,7 +797,8 @@ jQuery(function () {
         }
 
         var code = '8699958a-77f3-4db8-9422-126b0836e1c5';
-       
+        
+
         if (isBusy) return false;
         isBusy = true;
 
@@ -816,7 +813,7 @@ jQuery(function () {
                 version: jQuery("input[name='wpnotif_version']").val(),
             }, function (response, status) {
                 isBusy = false;
-                var data = 1;
+                 var data = 1;
 
 
                 var type = 1;
@@ -824,14 +821,14 @@ jQuery(function () {
                 jQuery(".wpnotif_domain_type").find('button[val=' + type + ']').trigger('click');
                 fd = dac.serialize();
 
+                
+                    jQuery(".wpnotif_prc_ver").show();
+                    jQuery(".wpnotif_prc_nover").hide();
+                    dpc.attr('invalid', 0);
+
                
-                jQuery(".wpnotif_prc_ver").show();
-                jQuery(".wpnotif_prc_nover").hide();
-                dpc.attr('invalid', 0);
 
                 
-
-               
 
                     jQuery(".wpnotif_btn_unregister").show();
 
